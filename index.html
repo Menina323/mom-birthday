@@ -370,6 +370,30 @@ h1{
   padding-bottom:var(--s-1);
 }
 
+/* 年数：跟在天数后面，另起一个度量 */
+.counter__yrs{
+  display:inline-flex;
+  align-items:baseline;
+  gap:.14em;
+  padding-bottom:var(--s-1);
+  margin-left:var(--s-3);
+  padding-left:var(--s-3);
+  border-left:1px solid var(--rule);
+  font-size:clamp(1.1rem,2vw,1.7rem);
+  color:var(--ink-2);
+  letter-spacing:.03em;
+  white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+}
+.counter__yrs em{
+  font-family:var(--font-kai);
+  font-style:normal;
+  font-size:clamp(1.6rem,3.4vw,2.8rem);
+  color:var(--ink);
+  line-height:1;
+  font-variant-numeric:lining-nums;
+}
+
 .counter__meta{
   margin-top:var(--s-4);
   display:flex;
@@ -1044,6 +1068,9 @@ html.js .reveal.in{ opacity:1; transform:none; }
     <div class="counter__num-wrap reveal" style="--d:90ms">
       <span id="days" aria-live="polite">15,708</span>
       <span id="days-unit">天</span>
+      <span class="counter__yrs">
+        <em id="years">四十三</em>载
+      </span>
     </div>
 
     <div class="counter__meta reveal" style="--d:180ms">
@@ -1234,12 +1261,31 @@ html.js .reveal.in{ opacity:1; transform:none; }
   /* 岁月计算器 */
   var BIRTH = { y: 1983, m: 10, d: 14 };
   var daysEl = document.getElementById('days');
+  var yearsEl = document.getElementById('years');
   var todayEl = document.getElementById('today');
   var clockEl = document.getElementById('clock');
-  var lastCount = -1;
+  var lastCount = -1, lastYears = -1;
 
   function midnight(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime(); }
   function dayCount(now) { return Math.round((midnight(now) - new Date(BIRTH.y, BIRTH.m, BIRTH.d).getTime()) / 864e5); }
+
+  /* 整年数：按生日是否已过算，不是减年份 */
+  function yearCount(now) {
+    var y = now.getFullYear() - BIRTH.y;
+    var passed = now.getMonth() > BIRTH.m ||
+                 (now.getMonth() === BIRTH.m && now.getDate() >= BIRTH.d);
+    return passed ? y : y - 1;
+  }
+
+  /* 阿拉伯数字转中文：43 -> 四十三，40 -> 四十 */
+  function cnNum(n) {
+    var dg = ['零','一','二','三','四','五','六','七','八','九'];
+    if (n < 10) return dg[n];
+    if (n < 20) return '十' + (n % 10 ? dg[n % 10] : '');
+    var tens = Math.floor(n / 10), ones = n % 10;
+    return dg[tens] + '十' + (ones ? dg[ones] : '');
+  }
+
   function cnDate(d) {
     var mm = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
     return mm[d.getMonth()] + d.getDate() + '日';
@@ -1269,10 +1315,17 @@ html.js .reveal.in{ opacity:1; transform:none; }
       if (!animating) daysEl.textContent = group(n);
       todayEl.textContent = cnDate(now);
     }
+    var yr = yearCount(now);
+    if (yr !== lastYears) {
+      lastYears = yr;
+      yearsEl.textContent = cnNum(yr);
+    }
     clockEl.textContent = pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
   }
   lastCount = dayCount(new Date());
+  lastYears = yearCount(new Date());
   daysEl.textContent = group(lastCount);
+  yearsEl.textContent = cnNum(lastYears);
   todayEl.textContent = cnDate(new Date());
   tick();
   setInterval(tick, 1000);
