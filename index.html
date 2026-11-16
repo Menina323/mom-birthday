@@ -260,26 +260,26 @@ h2{
 /* 名字：整页唯一一处写她本人 */
 .hero__name{
   margin-top:var(--s-5);
-  display:flex;
-  align-items:baseline;
-  gap:var(--s-3);
-  flex-wrap:wrap;
+  display:block;
 }
 .hero__name-cn{
+  display:inline-block;
   font-family:var(--font-song);
   font-weight:600;
-  font-size:clamp(1.3rem,1.8vw + .7rem,1.9rem);
-  letter-spacing:.18em;
+  font-size:clamp(1.5rem,2.2vw + .8rem,2.2rem);
+  letter-spacing:.16em;
   color:var(--ink);
   white-space:nowrap;
 }
 .hero__gloss{
+  display:block;
+  margin-top:var(--s-2);
   font-family:var(--font-kai);
   font-size:clamp(.8rem,.85vw + .45rem,.92rem);
   line-height:1.9;
   color:var(--ink-soft);
   letter-spacing:.02em;
-  max-width:18ch;
+  max-width:20ch;
 }
 
 .hero__sign{
@@ -319,9 +319,9 @@ h1{
 .hero__leaf{
   position:absolute;
   left:0;
-  top:50%;
+  top:76%;
   width:clamp(150px,26vw,300px);
-  opacity:.11;
+  opacity:.10;
   transform:translateY(-50%) rotate(-10deg);
   pointer-events:none;
   z-index:-1;
