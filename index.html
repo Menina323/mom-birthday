@@ -687,16 +687,18 @@ h1{
   box-shadow:0 0 0 4px var(--paper);
 }
 
-/* 未填的年份：明确留空，不竖排 */
-.tl__year--todo{
+/* 中间那些说不清年份的年头：不写字，只用三个点让时间过去 */
+.tl__year--gap{
   font-family:var(--font-song);
-  font-size:clamp(.82rem,.8vw + .5rem,.94rem);
+  font-size:clamp(1rem,1vw + .6rem,1.2rem);
   font-weight:400;
-  letter-spacing:.12em;
+  letter-spacing:.5em;
   color:var(--ink-soft);
+  opacity:.6;
   white-space:nowrap;
+  padding-right:.5em;
 }
-.tl__year--todo::after{ background:var(--rule-soft); }
+.tl__year--gap::after{ background:var(--rule-soft); }
 
 .tl__year--now{
   font-family:var(--font-kai);
@@ -1103,18 +1105,16 @@ html.js .reveal.in{ opacity:1; transform:none; }
         </div>
       </li>
 
-      <!-- 待填：哪一年从邵东去的阿克苏 -->
       <li class="tl__item reveal">
-        <span class="tl__year tl__year--todo">待补</span>
+        <span class="tl__year tl__year--gap" aria-hidden="true">···</span>
         <div class="tl__body">
           <h3 class="tl__title">离开邵东</h3>
           <p class="tl__desc">从湘中的丘陵，一路往西，到塔里木的边上。</p>
         </div>
       </li>
 
-      <!-- 待填：在地下街卖衣服是哪几年 -->
       <li class="tl__item reveal">
-        <span class="tl__year tl__year--todo">待补</span>
+        <span class="tl__year tl__year--gap" aria-hidden="true">···</span>
         <div class="tl__body">
           <h3 class="tl__title">阿克苏地下街</h3>
           <p class="tl__desc">在那里卖衣服。一天里要说多少句话，我数不过来。</p>
@@ -1122,17 +1122,16 @@ html.js .reveal.in{ opacity:1; transform:none; }
       </li>
 
       <li class="tl__item reveal">
-        <span class="tl__age" aria-hidden="true">24 岁</span>
+        <span class="tl__age tl__age--todo" aria-hidden="true">我来了</span>
         <span class="tl__year">2008</span>
         <div class="tl__body">
           <h3 class="tl__title">一月七日，我来了</h3>
-          <p class="tl__desc">那年你二十四岁。从此你的日子，多了一个人要操心。</p>
+          <p class="tl__desc">从此你的日子，多了一个人要操心。</p>
         </div>
       </li>
 
-      <!-- 待填：什么时候开始经营家里的小店 -->
       <li class="tl__item reveal">
-        <span class="tl__year tl__year--todo">待补</span>
+        <span class="tl__year tl__year--gap" aria-hidden="true">···</span>
         <div class="tl__body">
           <h3 class="tl__title">家里的小店</h3>
           <p class="tl__desc">不再跑远路，把小店开在了家门口。人来人往，你都记得住。</p>
