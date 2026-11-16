@@ -45,6 +45,7 @@
 :root{
   /* grounds */
   --paper:        #F2E8D6;
+  --paper-2:      #EADDC5;
   --card:         #FBF5E7;
   --letter-a:     #FCF6E7;
   --letter-b:     #F1E5CC;
@@ -85,10 +86,6 @@
   --arm-b:        #7C6746;
   --groove:       rgba(255,255,255,.055);
 
-  /* polaroid gradient stands */
-  --g1-a:#F0D69A; --g1-b:#D6A85E; --g1-c:#A97432;
-  --g2-a:#D99A6C; --g2-b:#B45F38; --g2-c:#7C3520;
-  --g3-a:#CFC79A; --g3-b:#9A9560; --g3-c:#5E6038;
 
   /* washes */
   --glow-a:       rgba(255,224,163,.52);
@@ -415,7 +412,7 @@ h1{
   --rot:-5deg;
   position:relative;
   background:var(--card);
-  padding:var(--s-1) var(--s-1) var(--s-5);
+  padding:var(--s-1) var(--s-1) 88px;
   box-shadow:var(--sh-card-1), var(--sh-card-2);
   transform:rotate(var(--rot));
   transition:transform .72s var(--ease), box-shadow .72s var(--ease);
@@ -433,40 +430,58 @@ h1{
   position:relative;
   aspect-ratio:4/5;
   overflow:hidden;
-  background:
-    radial-gradient(120% 90% at 18% 12%, var(--glass-hi), transparent 58%),
-    linear-gradient(158deg, var(--g1) 0%, var(--g2) 58%, var(--g3) 100%);
-  display:grid;
-  place-items:center;
+  background:var(--paper-2);
+  display:block;
   isolation:isolate;
 }
+.card__photo img{
+  position:absolute;
+  inset:0;
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  /* 老照片偏艳，压一点饱和、提一点暖，跟纸色合得上 */
+  filter:saturate(.86) contrast(1.02) brightness(1.01) sepia(.06);
+  transition:filter .8s var(--ease);
+}
+.card:hover .card__photo img,
+.card:focus-within .card__photo img{
+  filter:saturate(.92) contrast(1.03) brightness(1.03) sepia(.02);
+}
+/* 极淡的纸纹压在照片上，做成相纸的感觉 */
 .card__photo::after{
   content:"";
   position:absolute;
   inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.10'/%3E%3C/svg%3E");
   mix-blend-mode:overlay;
   pointer-events:none;
 }
-.card__ph{
-  writing-mode:vertical-rl;
-  font-family:var(--font-kai);
-  font-size:clamp(.78rem,1.15vw,.95rem);
-  letter-spacing:.04em;
-  color:var(--card-hi);
-  text-shadow:0 1px 8px var(--card-ink-sh);
-  position:relative;
-  z-index:1;
-}
 .card figcaption{
   position:absolute;
-  left:0; right:0;
-  bottom:var(--s-2);
+  left:var(--s-1); right:var(--s-1);
+  bottom:10px;
   text-align:center;
   font-family:var(--font-kai);
-  font-size:clamp(.82rem,1.05vw + .2rem,.98rem);
   color:var(--ink-2);
-  letter-spacing:.03em;
+  padding-inline:var(--s-2);
+  line-height:1.5;
+}
+.cap__year{
+  display:block;
+  font-family:var(--font-num);
+  font-size:clamp(.72rem,.8vw + .4rem,.84rem);
+  letter-spacing:.22em;
+  color:var(--ink-soft);
+  margin-bottom:.28em;
+  font-variant-numeric:tabular-nums;
+}
+.cap__line{
+  display:block;
+  font-size:clamp(.78rem,.9vw + .36rem,.9rem);
+  letter-spacing:.02em;
+  color:var(--ink-2);
 }
 
 /* 四 · 留声机 */
@@ -953,7 +968,7 @@ html.js .reveal.in{ opacity:1; transform:none; }
   .counter__dot{ display:none; }
 
   .cards{
-    grid-template-columns:1fr;
+    grid-template-columns:minmax(0,1fr);
     gap:var(--s-4);
     padding-inline:var(--s-2);
   }
@@ -1041,23 +1056,41 @@ html.js .reveal.in{ opacity:1; transform:none; }
   <section class="album" aria-labelledby="album-h">
     <div class="album__head reveal">
       <h2 id="album-h">时光相册</h2>
-      <p class="lede">还缺三张照片。等你翻出来，这里就是完整的。</p>
+      <p class="lede">十二年，三张照片。中间那些年你没怎么上过镜。</p>
     </div>
 
     <div class="cards">
-      <figure class="card reveal" style="--g1:var(--g1-a);--g2:var(--g1-b);--g3:var(--g1-c);--d:0ms">
-        <div class="card__photo"><span class="card__ph">时光预留</span></div>
-        <figcaption>惊艳了时光的你</figcaption>
+      <figure class="card reveal" style="--d:0ms">
+        <div class="card__photo">
+          <img src="photos/m2013.jpg" width="880" height="1100"
+               alt="二〇一三年，妈妈在九寨沟，红色条纹上衣，身后是蓝色的湖水" loading="lazy" decoding="async">
+        </div>
+        <figcaption>
+          <span class="cap__year">二〇一三</span>
+          <span class="cap__line">九寨沟的水是蓝的，你站在春天里</span>
+        </figcaption>
       </figure>
 
-      <figure class="card reveal" style="--g1:var(--g2-a);--g2:var(--g2-b);--g3:var(--g2-c);--d:110ms">
-        <div class="card__photo"><span class="card__ph">时光预留</span></div>
-        <figcaption>岁月不败美人</figcaption>
+      <figure class="card reveal" style="--d:110ms">
+        <div class="card__photo">
+          <img src="photos/m2019.jpg" width="880" height="1100"
+               alt="二〇一九年，妈妈在公园小路上，穿红色波点上衣，微微歪头" loading="lazy" decoding="async">
+        </div>
+        <figcaption>
+          <span class="cap__year">二〇一九</span>
+          <span class="cap__line">公园那条路，那天你歪了下头</span>
+        </figcaption>
       </figure>
 
-      <figure class="card reveal" style="--g1:var(--g3-a);--g2:var(--g3-b);--g3:var(--g3-c);--d:220ms">
-        <div class="card__photo"><span class="card__ph">时光预留</span></div>
-        <figcaption>现在的你，闪闪发光</figcaption>
+      <figure class="card reveal" style="--d:220ms">
+        <div class="card__photo">
+          <img src="photos/m2025.jpg" width="880" height="1100"
+               alt="二〇二五年生日，妈妈和弟弟在生日蛋糕前合影" loading="lazy" decoding="async">
+        </div>
+        <figcaption>
+          <span class="cap__year">二〇二五</span>
+          <span class="cap__line">生日这天，你和弟弟都在笑</span>
+        </figcaption>
       </figure>
     </div>
   </section>
