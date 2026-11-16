@@ -66,6 +66,7 @@
   --gold-hot:     #A87822;
   --gold-plate:   0 3px 10px rgba(120,80,20,.28), 0 1px 0 rgba(255,246,214,.55);
   --maple:        #9A4A22;
+  --maple-halo:   var(--maple-halo);
 
   /* seal */
   --seal:         #8E2F22;
@@ -617,6 +618,144 @@ h1{
 }
 .player.is-playing .player__hint{ opacity:0; }
 
+/* 五 · 时间线 */
+.road__head{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:var(--s-3);
+  flex-wrap:wrap;
+  margin-bottom:var(--s-6);
+}
+
+.tl{
+  list-style:none;
+  margin:0;
+  padding:0;
+  position:relative;
+  max-width:100%;
+}
+
+/* 竖线：年份列之后 */
+.tl::before{
+  content:"";
+  position:absolute;
+  left:calc(clamp(3.5rem,5vw + 2rem,5.6rem) + var(--s-4));
+  top:16px;
+  bottom:16px;
+  width:1px;
+  background:linear-gradient(180deg,
+    var(--rule-soft) 0%,
+    var(--rule) 55%,
+    rgba(122,102,78,0) 100%);
+}
+
+.tl__item{
+  display:grid;
+  grid-template-columns:clamp(3.5rem,5vw + 2rem,5.6rem) minmax(0,1fr);
+  gap:var(--s-4);
+  align-items:start;
+  padding-block:var(--s-4);
+  position:relative;
+}
+
+/* 年份：大字，右对齐，永远不换行 */
+.tl__year{
+  font-family:var(--font-num);
+  font-size:clamp(1.5rem,2.4vw + .7rem,2.3rem);
+  font-weight:600;
+  line-height:1;
+  letter-spacing:-.01em;
+  color:var(--ink);
+  font-variant-numeric:tabular-nums lining-nums;
+  text-align:right;
+  white-space:nowrap;
+  padding-top:.12em;
+  position:relative;
+}
+/* 线上的点：压在竖线上 */
+.tl__year::after{
+  content:"";
+  position:absolute;
+  right:calc(var(--s-4) / -2);
+  top:.52em;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--gold);
+  transform:translateX(50%);
+  box-shadow:0 0 0 4px var(--paper);
+}
+
+/* 未填的年份：明确留空，不竖排 */
+.tl__year--todo{
+  font-family:var(--font-song);
+  font-size:clamp(.82rem,.8vw + .5rem,.94rem);
+  font-weight:400;
+  letter-spacing:.12em;
+  color:var(--ink-soft);
+  white-space:nowrap;
+}
+.tl__year--todo::after{ background:var(--rule-soft); }
+
+.tl__year--now{
+  font-family:var(--font-kai);
+  font-size:clamp(1.05rem,1.4vw + .5rem,1.4rem);
+  letter-spacing:.1em;
+  color:var(--gold);
+}
+.tl__year--now::after{
+  background:var(--maple);
+  box-shadow:0 0 0 4px var(--paper), 0 0 0 7px var(--maple-halo);
+}
+
+.tl__year--now{
+  font-family:var(--font-kai);
+  font-size:clamp(1.05rem,1.4vw + .5rem,1.4rem);
+  letter-spacing:.16em;
+  color:var(--gold);
+}
+.tl__year--now::after{
+  background:var(--maple);
+  box-shadow:0 0 0 4px var(--paper), 0 0 0 7px var(--maple-halo);
+}
+
+.tl__body{ min-width:0; padding-top:.1em; }
+.tl__title{
+  font-family:var(--font-song);
+  font-weight:400;
+  font-size:clamp(1.02rem,1.1vw + .62rem,1.24rem);
+  letter-spacing:.06em;
+  color:var(--ink);
+  margin-bottom:.42em;
+}
+.tl__desc{
+  color:var(--ink-2);
+  font-size:.94rem;
+  line-height:2.05;
+  letter-spacing:.02em;
+  max-width:60ch;
+}
+
+/* 右侧：那一年她几岁，很淡，只做重量 */
+.tl__age{
+  position:absolute;
+  right:0;
+  top:50%;
+  transform:translateY(-50%);
+  font-family:var(--font-num);
+  font-size:clamp(2.4rem,5vw,4.2rem);
+  font-weight:600;
+  line-height:1;
+  letter-spacing:-.02em;
+  color:var(--ink);
+  opacity:.055;
+  font-variant-numeric:tabular-nums;
+  pointer-events:none;
+  user-select:none;
+}
+.tl__age--todo{ font-family:var(--font-song); font-size:clamp(1rem,1.4vw,1.3rem); letter-spacing:.2em; opacity:.10; }
+
 /* 五 · 来信 */
 .mail{
   display:flex;
@@ -835,8 +974,19 @@ html.js .reveal.in{ opacity:1; transform:none; }
   html.js .reveal{ opacity:1 !important; transform:none !important; }
   .disc{ animation:none !important; }
 }
-</style>
-</head>
+@media (max-width:640px){
+  .tl::before{ left:5px; top:14px; bottom:14px; }
+  .tl__item{
+    grid-template-columns:1fr;
+    gap:var(--s-1);
+    padding-left:var(--s-3);
+  }
+  .tl__year{ text-align:left; padding-top:0; }
+  .tl__year::after{ right:auto; left:calc(var(--s-3) * -1); top:.5em; }
+  .tl__title{ margin-bottom:.28em; }
+  .tl__desc{ max-width:100%; }
+}
+</style></head>
 <body>
 
 <div class="bloom" aria-hidden="true"></div>
@@ -937,6 +1087,69 @@ html.js .reveal.in{ opacity:1; transform:none; }
     </button>
   </section>
 
+  <section class="road" aria-labelledby="road-h">
+    <div class="road__head reveal">
+      <h2 id="road-h">从邵东到阿克苏</h2>
+      <p class="lede">一条线的两头，隔着大半个中国。</p>
+    </div>
+
+    <ol class="tl">
+      <li class="tl__item reveal">
+        <span class="tl__age tl__age--todo" aria-hidden="true">出生</span>
+        <span class="tl__year">1983</span>
+        <div class="tl__body">
+          <h3 class="tl__title">湖南邵东</h3>
+          <p class="tl__desc">十一月十四日，你出生。那天是立冬后的第六天。</p>
+        </div>
+      </li>
+
+      <!-- 待填：哪一年从邵东去的阿克苏 -->
+      <li class="tl__item reveal">
+        <span class="tl__year tl__year--todo">待补</span>
+        <div class="tl__body">
+          <h3 class="tl__title">离开邵东</h3>
+          <p class="tl__desc">从湘中的丘陵，一路往西，到塔里木的边上。</p>
+        </div>
+      </li>
+
+      <!-- 待填：在地下街卖衣服是哪几年 -->
+      <li class="tl__item reveal">
+        <span class="tl__year tl__year--todo">待补</span>
+        <div class="tl__body">
+          <h3 class="tl__title">阿克苏地下街</h3>
+          <p class="tl__desc">在那里卖衣服。一天里要说多少句话，我数不过来。</p>
+        </div>
+      </li>
+
+      <li class="tl__item reveal">
+        <span class="tl__age" aria-hidden="true">24 岁</span>
+        <span class="tl__year">2008</span>
+        <div class="tl__body">
+          <h3 class="tl__title">一月七日，我来了</h3>
+          <p class="tl__desc">那年你二十四岁。从此你的日子，多了一个人要操心。</p>
+        </div>
+      </li>
+
+      <!-- 待填：什么时候开始经营家里的小店 -->
+      <li class="tl__item reveal">
+        <span class="tl__year tl__year--todo">待补</span>
+        <div class="tl__body">
+          <h3 class="tl__title">家里的小店</h3>
+          <p class="tl__desc">不再跑远路，把小店开在了家门口。人来人往，你都记得住。</p>
+        </div>
+      </li>
+
+      <li class="tl__item reveal">
+        <span class="tl__age tl__age--todo" aria-hidden="true">此刻</span>
+        <span class="tl__year tl__year--now">今天</span>
+        <div class="tl__body">
+          <h3 class="tl__title">还在阿克苏</h3>
+          <p class="tl__desc">风沙年年刮，你年年把店里收拾得干干净净。</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
   <section class="mail" aria-labelledby="mail-h">
     <h2 id="mail-h" class="reveal">秋日来信</h2>
     <p class="lede reveal" style="--d:90ms">封了火漆的那一封，只写给你。</p>
@@ -962,8 +1175,9 @@ html.js .reveal.in{ opacity:1; transform:none; }
       <div>
         <article class="letter-paper">
           <h3>亲爱的妈妈：</h3>
-          <p>秋天又到了。银杏总是先黄的那一个，一阵风过去，叶子就一层一层落下来，像谁把一整年的金色都摊在了地上。</p>
-          <p>我常常想起你弯腰的样子，想起你低头择菜的样子，想起你在门口等我回家的样子。那些事都太小了，小到当时连一声谢谢都来不及说。可它们一天天叠起来，就成了我现在的样子。</p>
+          <p>秋天又到了。阿克苏的秋天来得比邵东早，风一起，叶子就一层一层落下来，像谁把一整年的金色都摊在了地上。</p>
+          <p>你从湘中的丘陵一路往西，走到了塔里木的边上。在阿克苏的地下街卖过衣服，一天里不知道要说多少句话。后来不开那么远的路了，把小店开在家门口，人来人往，你都记得住。</p>
+          <p>我常常想起你弯腰的样子，想起你低头择菜的样子，想起你在店门口等客人的样子。那些事都太小了，小到当时连一声谢谢都来不及说。可它们一天天叠起来，就成了我现在的样子。</p>
           <p>今天是你的生日。愿你从今往后，睡得早一点，笑得松一点，喜欢什么就买什么，想去哪儿就动身。愿你被日子温柔地对待，也愿你偶尔任性一点，不必什么都替别人想在前头。</p>
           <p>你在我眼里一直是好看的。不是需要打扮的那种好看，是一开口、一笑，整个屋子就暖起来的那种好看。</p>
           <p>生日快乐，妈妈。往后的每一年，我都想在。</p>
