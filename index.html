@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F2E8D6">
-<meta name="description" content="写给妈妈的秋日生日页：岁月计算器、时光相册、留声机与一封火漆信。">
+<meta name="description" content="写给妈妈李金秀的秋日生日页：岁月计算器、时光相册、一段录音和一封火漆信。">
 <meta property="og:type" content="website">
 <meta property="og:title" content="亲爱的妈妈，生日快乐">
 <meta property="og:description" content="你在这个世界上闪闪发光的日子。">
@@ -59,7 +59,6 @@
   --ink:          #2F2116;
   --ink-2:        #5C4A36;
   --ink-soft:     #7A664E;
-  --on-dark:      #F1DEB6;
 
   /* gold: 三段全部过 3:1（亮端 3.22 / 中段 3.56 / 暗端 4.85） */
   --gold:         #8A5A1E;
@@ -75,16 +74,6 @@
   --seal-dk:      #6B2118;
 
   /* record player */
-  --deck-a:       #5B4230;
-  --deck-b:       #38271A;
-  --disc-a:       #2A2620;
-  --disc-b:       #0C0A08;
-  --label-a:      #F7E7C0;
-  --label-b:      #C9A563;
-  --label-ink:    #5A3F1C;
-  --arm-a:        #E3D0AC;
-  --arm-b:        #7C6746;
-  --groove:       rgba(255,255,255,.055);
 
 
   /* washes */
@@ -266,6 +255,31 @@ h2{
   color:var(--ink-2);
   letter-spacing:.04em;
   max-width:22ch;
+}
+
+/* 名字：整页唯一一处写她本人 */
+.hero__name{
+  margin-top:var(--s-5);
+  display:flex;
+  align-items:baseline;
+  gap:var(--s-3);
+  flex-wrap:wrap;
+}
+.hero__name-cn{
+  font-family:var(--font-song);
+  font-weight:600;
+  font-size:clamp(1.3rem,1.8vw + .7rem,1.9rem);
+  letter-spacing:.18em;
+  color:var(--ink);
+  white-space:nowrap;
+}
+.hero__gloss{
+  font-family:var(--font-kai);
+  font-size:clamp(.8rem,.85vw + .45rem,.92rem);
+  line-height:1.9;
+  color:var(--ink-soft);
+  letter-spacing:.02em;
+  max-width:18ch;
 }
 
 .hero__sign{
@@ -508,18 +522,19 @@ h1{
   color:var(--ink-2);
 }
 
-/* 四 · 留声机 */
-.gramo{
+/* 四 · 我说的话 */
+.voice{
   display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(0,.92fr);
-  gap:var(--s-6);
+  grid-template-columns:minmax(0,1fr) auto;
+  grid-template-rows:auto auto;
+  gap:var(--s-2) var(--s-6);
   align-items:center;
 }
-.gramo__text{ min-width:0; }
-.gramo__text h2{ margin-bottom:var(--s-3); }
-.gramo__text .lede{ max-width:34ch; }
+.voice__text{ grid-column:1; grid-row:1 / span 2; }
+.voice__text h2{ margin-bottom:var(--s-3); }
+.voice__text .lede{ max-width:34ch; }
 
-.gramo__tip{
+.voice__tip{
   margin-top:var(--s-3);
   font-size:.84rem;
   color:var(--ink-soft);
@@ -527,136 +542,137 @@ h1{
   min-height:1.6em;
   transition:color .4s var(--ease);
 }
-.gramo__tip.is-warn{ color:var(--maple); }
+.voice__tip.is-warn{ color:var(--maple); }
 
-.player{
+/* 播放键：一枚铜的音孔 */
+.vplayer{
   all:unset;
-  display:block;
-  width:100%;
-  max-width:420px;
-  margin-inline:auto;
+  position:relative;
+  display:grid;
+  place-items:center;
+  width:clamp(150px,20vw,210px);
+  aspect-ratio:1;
   cursor:pointer;
   -webkit-tap-highlight-color:transparent;
+  border-radius:50%;
 }
-.player:focus-visible{ outline:2px solid var(--gold); outline-offset:8px; border-radius:26px; }
+.vplayer:focus-visible{ outline:2px solid var(--gold); outline-offset:12px; }
+.vplayer:active .vplayer__core{ transform:scale(.96); }
 
-.deck{
-  position:relative;
-  display:block;
-  aspect-ratio:1;
-  border-radius:26px;
-  background:linear-gradient(160deg, var(--deck-a) 0%, var(--deck-b) 100%);
-  box-shadow:var(--sh-deck);
-  transition:transform .6s var(--ease);
-}
-.player:hover .deck{ transform:translateY(-4px); }
-.player:active .deck{ transform:translateY(-1px) scale(.995); }
-
-.platter{
+.vplayer__ring{
   position:absolute;
-  inset:11%;
+  inset:0;
   border-radius:50%;
-  background:linear-gradient(150deg, var(--disc-a), var(--disc-b));
-  box-shadow:var(--sh-platter);
-  display:grid;
-  place-items:center;
-  overflow:hidden;
+  border:1px solid var(--rule-soft);
+  opacity:.55;
 }
-
-.disc{
-  position:relative;
-  width:94%;
-  aspect-ratio:1;
-  border-radius:50%;
-  background:
-    repeating-radial-gradient(circle at 50% 50%,
-      var(--groove) 0 1px,
-      transparent 1px 4px),
-    radial-gradient(circle at 34% 26%, var(--disc-a) 0%, var(--disc-b) 62%, var(--disc-b) 100%);
-  display:grid;
-  place-items:center;
-  will-change:transform;
-  animation:spin 2.7s linear infinite;
-  animation-play-state:paused;
+.vplayer__ring--2{
+  inset:12%;
+  border-color:var(--rule);
+  opacity:.4;
 }
-.player.is-playing .disc{ animation-play-state:running; }
-@keyframes spin{ to{ transform:rotate(360deg); } }
-.disc::after{
+/* 播放时向外扩散的呼吸环 */
+.vplayer::before{
   content:"";
   position:absolute;
   inset:0;
   border-radius:50%;
-  background:linear-gradient(126deg, var(--glow-e) 0%, transparent 46%, transparent 66%, var(--glow-e) 100%);
+  border:1px solid var(--gold);
+  opacity:0;
   pointer-events:none;
 }
+.vplayer.is-playing::before{
+  animation:ping 2.6s var(--ease-soft) infinite;
+}
+@keyframes ping{
+  0%  { transform:scale(1);   opacity:.45; }
+  70% { transform:scale(1.55); opacity:0; }
+  100%{ transform:scale(1.55); opacity:0; }
+}
 
-.label{
-  width:34%;
+.vplayer__core{
+  position:relative;
+  width:58%;
   aspect-ratio:1;
   border-radius:50%;
-  background:radial-gradient(circle at 34% 28%, var(--label-a), var(--label-b) 100%);
   display:grid;
   place-items:center;
-  text-align:center;
-  color:var(--label-ink);
-  box-shadow:inset 0 0 0 1px var(--edge);
-  line-height:1.35;
+  background:
+    radial-gradient(circle at 36% 30%, var(--gold-hot) 0%, var(--gold-2) 52%, var(--gold) 100%);
+  box-shadow:
+    inset 0 2px 6px var(--core-hi),
+    inset 0 -6px 14px var(--core-lo),
+    0 10px 24px -10px var(--core-sh);
+  color:var(--paper);
+  transition:transform .45s var(--ease), box-shadow .45s var(--ease);
 }
-.label span{ display:block; font-family:var(--font-kai); font-size:clamp(.62rem,1.6vw,.78rem); letter-spacing:.03em; }
-.label .label__sub{ font-size:clamp(.5rem,1.2vw,.62rem); opacity:.75; letter-spacing:.03em; margin-top:.2em; }
-
-.arm{
-  position:absolute;
-  top:8%;
-  right:9%;
-  width:5px;
-  height:56%;
-  transform-origin:50% 6%;
-  transform:rotate(13deg);
-  transition:transform 1.5s var(--ease);
-  pointer-events:none;
-}
-.player.is-playing .arm{ transform:rotate(29deg); }
-.arm__pivot{
-  position:absolute;
-  top:-12px; left:50%;
-  width:26px; height:26px;
-  margin-left:-12px;
-  border-radius:50%;
-  background:radial-gradient(circle at 34% 30%, var(--arm-a), var(--arm-b) 100%);
-  box-shadow:var(--sh-pivot);
-}
-.arm__bar{
-  position:absolute;
-  top:6px; left:50%;
-  width:4px; height:100%;
-  margin-left:-2px;
-  border-radius:3px;
-  background:linear-gradient(180deg, var(--arm-a), var(--arm-b) 100%);
-}
-.arm__head{
-  position:absolute;
-  bottom:-14px; left:50%;
-  width:16px; height:24px;
-  margin-left:-8px;
-  border-radius:3px 3px 6px 6px;
-  background:linear-gradient(160deg, var(--arm-a), var(--arm-b));
+.vplayer:hover .vplayer__core{
+  box-shadow:
+    inset 0 2px 6px var(--core-hi-2),
+    inset 0 -6px 14px var(--core-lo-2),
+    0 16px 32px -12px var(--core-sh-2);
 }
 
-.player__hint{
+.vplayer__icon{
+  width:34%;
+  height:34%;
   position:absolute;
-  bottom:12px; left:0; right:0;
-  text-align:center;
+  transition:opacity .3s var(--ease), transform .3s var(--ease);
+}
+html.js .vplayer__icon--pause{ opacity:0; transform:scale(.8); }
+.vplayer.is-playing .vplayer__icon--play{ opacity:0; transform:scale(.8); }
+.vplayer.is-playing .vplayer__icon--pause{ opacity:1; transform:scale(1); }
+
+.vplayer__cap{
+  position:absolute;
+  bottom:-28px;
+  left:50%;
+  transform:translateX(-50%);
   font-family:var(--font-kai);
-  font-size:.72rem;
-  letter-spacing:.03em;
-  color:var(--on-dark);
-  opacity:.72;
-  pointer-events:none;
-  transition:opacity .6s var(--ease);
+  font-size:.75rem;
+  letter-spacing:.22em;
+  color:var(--ink-soft);
+  white-space:nowrap;
+  background:var(--paper);
+  padding-inline:.5em;
 }
-.player.is-playing .player__hint{ opacity:0; }
 
+/* 声波：不动时是矮的，播放时活起来 */
+.wave{
+  grid-column:2;
+  grid-row:2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  height:44px;
+  margin-top:var(--s-2);
+  opacity:.5;
+  transition:opacity .5s var(--ease);
+}
+body.voice-on .wave{ opacity:1; }
+
+.wave span{
+  display:block;
+  width:2px;
+  height:44px;
+  border-radius:2px;
+  background:linear-gradient(180deg,var(--gold-2),var(--gold));
+  transform-origin:center;
+  transform:scaleY(.18);
+  transition:transform .4s var(--ease);
+}
+body.voice-on .wave span{
+  animation:wipe 1.15s ease-in-out infinite alternate;
+}
+.wave span:nth-child(3n)  { animation-delay:-.15s; }
+.wave span:nth-child(3n+1){ animation-delay:-.42s; }
+.wave span:nth-child(4n)  { animation-delay:-.68s; }
+.wave span:nth-child(5n)  { animation-delay:-.9s; }
+@keyframes wipe{
+  0%  { transform:scaleY(.18); opacity:.45; }
+  100%{ transform:scaleY(1);    opacity:1; }
+}
 /* 五 · 时间线 */
 .road__head{
   display:flex;
@@ -1013,7 +1029,6 @@ html.js .reveal.in{ opacity:1; transform:none; }
   }
   .bloom,.flare{ animation:none !important; }
   html.js .reveal{ opacity:1 !important; transform:none !important; }
-  .disc{ animation:none !important; }
 }
 @media (max-width:640px){
   .tl::before{ left:5px; top:14px; bottom:14px; }
@@ -1053,6 +1068,10 @@ html.js .reveal.in{ opacity:1; transform:none; }
 
     <div class="hero__aside reveal" style="--d:120ms">
       <p class="hero__line">秋天把一整年的金色<br>都放在了今天。</p>
+      <p class="hero__name">
+        <span class="hero__name-cn">李金秀</span>
+        <span class="hero__gloss">金是贵重，秀是清朗。名字里两样都给了你。</span>
+      </p>
       <p class="hero__sign">二〇二六年 · 秋</p>
     </div>
 
@@ -1122,31 +1141,36 @@ html.js .reveal.in{ opacity:1; transform:none; }
     </div>
   </section>
 
-  <section class="gramo" aria-labelledby="gramo-h">
-    <div class="gramo__text reveal">
-      <h2 id="gramo-h">时光留声机</h2>
-      <p class="lede">唱片转起来的时候，会有一首歌。它一直在等这张唱片被放下。</p>
-      <p class="gramo__tip" id="tip">轻触唱片，让它转起来。</p>
+  <section class="voice" aria-labelledby="voice-h">
+    <div class="voice__text reveal">
+      <h2 id="voice-h">我想跟你说几句话</h2>
+      <p class="lede">不是打字，是声音。你点一下就能听见。</p>
+      <p class="voice__tip" id="tip">轻触中间，播放。</p>
     </div>
 
-    <button class="player reveal" id="player" type="button" aria-pressed="false" aria-label="播放妈妈的歌">
-      <span class="deck">
-        <span class="platter">
-          <span class="disc" id="disc">
-            <span class="label">
-              <span>妈妈的歌</span>
-              <span class="label__sub">A 面</span>
-            </span>
-          </span>
-        </span>
-        <span class="arm" aria-hidden="true">
-          <span class="arm__pivot"></span>
-          <span class="arm__bar"></span>
-          <span class="arm__head"></span>
-        </span>
-        <span class="player__hint" aria-hidden="true">轻触唱片</span>
+    <button class="vplayer reveal" id="player" type="button" aria-pressed="false" aria-label="播放孩子说给妈妈的话">
+      <span class="vplayer__ring" aria-hidden="true"></span>
+      <span class="vplayer__ring vplayer__ring--2" aria-hidden="true"></span>
+
+      <span class="vplayer__core" aria-hidden="true">
+        <svg class="vplayer__icon vplayer__icon--play" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8 5.5v13a1 1 0 0 0 1.53.85l10-6.5a1 1 0 0 0 0-1.7l-10-6.5A1 1 0 0 0 8 5.5z"/>
+        </svg>
+        <svg class="vplayer__icon vplayer__icon--pause" viewBox="0 0 24 24" fill="currentColor">
+          <rect x="7" y="5" width="3.6" height="14" rx="1.2"/>
+          <rect x="13.4" y="5" width="3.6" height="14" rx="1.2"/>
+        </svg>
       </span>
+
+      <span class="vplayer__cap" aria-hidden="true">孩子的话</span>
     </button>
+
+    <div class="wave" id="wave" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
   </section>
 
   <section class="road" aria-labelledby="road-h">
@@ -1169,7 +1193,7 @@ html.js .reveal.in{ opacity:1; transform:none; }
         <span class="tl__year tl__year--gap" aria-hidden="true">···</span>
         <div class="tl__body">
           <h3 class="tl__title">离开邵东</h3>
-          <p class="tl__desc">从湘中的丘陵，一路往西，到塔里木的边上。</p>
+          <p class="tl__desc">从湘中的丘陵，一路往西，到塔里木的边上。三千二百五十六公里，把两个家连成了一条线。</p>
         </div>
       </li>
 
@@ -1249,7 +1273,7 @@ html.js .reveal.in{ opacity:1; transform:none; }
   <footer>愿 岁 月 温 柔</footer>
 </main>
 
-<audio id="song" src="audio/mom.mp3" loop preload="none"></audio>
+<audio id="voice" src="audio/voice.mp3" preload="none"></audio>
 
 <script>
 (function () {
@@ -1353,34 +1377,44 @@ html.js .reveal.in{ opacity:1; transform:none; }
     reveals.forEach(function (el) { io.observe(el); });
   }
 
-  /* 留声机 */
+  /* 我说的话 */
   var player = document.getElementById('player');
-  var song = document.getElementById('song');
+  var voice = document.getElementById('voice');
   var tip = document.getElementById('tip');
   var playing = false;
 
   function warn() {
     tip.classList.add('is-warn');
-    tip.textContent = '把 mom.mp3 放进 audio 文件夹，就能唱了。唱片先替你转着。';
+    tip.textContent = '录音还没放进来。等孩子录好了，这里就有他的声音。';
   }
 
   function setPlaying(on) {
     playing = on;
     player.classList.toggle('is-playing', on);
+    document.body.classList.toggle('voice-on', on);
     player.setAttribute('aria-pressed', on ? 'true' : 'false');
-    player.setAttribute('aria-label', on ? '暂停妈妈的歌' : '播放妈妈的歌');
-    if (on) { tip.classList.remove('is-warn'); tip.textContent = '正在播放，轻触可暂停'; }
-    else { tip.textContent = '轻触唱片，让它转起来。'; }
+    player.setAttribute('aria-label', on ? '暂停这段话' : '播放孩子说给妈妈的话');
+    if (on) { tip.classList.remove('is-warn'); tip.textContent = '正在说，轻触可暂停'; }
+    else { tip.textContent = '轻触中间，播放。'; }
   }
 
   player.addEventListener('click', function () {
-    if (playing) { song.pause(); setPlaying(false); return; }
-    setPlaying(true);
-    var p = song.play();
-    if (p && p.catch) { p.catch(function () { warn(); }); }
+    if (playing) { voice.pause(); setPlaying(false); return; }
+    setPlaying(true);                      // 先给反馈，点下去就要有反应
+    var p = voice.play();
+    if (p && p.catch) {
+      p.catch(function () {                // 音源缺失或被拦，回滚到未播放
+        setPlaying(false);
+        warn();
+      });
+    }
   });
 
-  song.addEventListener('error', function () { if (playing) warn(); });
+  // 播完自己停，不要把按钮留在播放态
+  voice.addEventListener('ended', function () { setPlaying(false); });
+  voice.addEventListener('error', function () {
+    if (playing) { setPlaying(false); warn(); }
+  });
 
   /* 来信 */
   var envelope = document.getElementById('envelope');
