@@ -5,8 +5,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F2E8D6">
 <meta name="description" content="写给妈妈的秋日生日页：岁月计算器、时光相册、留声机与一封火漆信。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="亲爱的妈妈，生日快乐">
+<meta property="og:description" content="你在这个世界上闪闪发光的日子。">
+<meta property="og:image" content="https://menina323.github.io/mom-birthday/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://menina323.github.io/mom-birthday/">
+<meta name="twitter:card" content="summary_large_image">
 <title>亲爱的妈妈，生日快乐</title>
+<link rel="preload" href="fonts/serif-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/serif-semibold.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+/* Hallmark · v2.0.0 · shape: Letter / vertical title, dealt by hand · genre editorial · stamp 2026-11-16
+   critique: the gold numeral carries the page; everything else steps back to one paper field
+   waive 67: Chinese two-character captions need tracking to breathe; kept at 0.04em, the floor of the rule
+   waive 2b: the gold numeral is the page's signature; three-stop ramp, every stop clears 3:1 on paper
+   answered 19: the one dash sits in a UI status line, not in body copy */
+@font-face{
+  font-family:"DSH Serif";
+  font-style:normal;
+  font-weight:400;
+  font-display:swap;
+  src:url("fonts/serif-regular.woff2") format("woff2");
+}
+@font-face{
+  font-family:"DSH Serif";
+  font-style:normal;
+  font-weight:600;
+  font-display:swap;
+  src:url("fonts/serif-semibold.woff2") format("woff2");
+}
 /* Hallmark · v2.0.0 · shape: Letter / vertical title, dealt by hand · genre editorial · stamp 2026-11-16
    critique: the gold numeral carries the page; everything else steps back to one paper field
    waive 67: Chinese two-character captions need tracking to breathe; kept at 0.04em, the floor of the rule
@@ -31,11 +60,12 @@
   --ink-soft:     #7A664E;
   --on-dark:      #F1DEB6;
 
-  /* gold */
-  --gold:         #B9873B;
-  --gold-2:       #D9AE5B;
-  --gold-hot:     #F5DFA8;
-  --maple:        #A8542C;
+  /* gold: 三段全部过 3:1（亮端 3.22 / 中段 3.56 / 暗端 4.85） */
+  --gold:         #8A5A1E;
+  --gold-2:       #A17020;
+  --gold-hot:     #A87822;
+  --gold-plate:   0 3px 10px rgba(120,80,20,.28), 0 1px 0 rgba(255,246,214,.55);
+  --maple:        #9A4A22;
 
   /* seal */
   --seal:         #8E2F22;
@@ -92,7 +122,8 @@
   --sh-pivot:     0 3px 8px rgba(74,53,26,.45);
 
   /* type */
-  --font-song: "Songti SC","STSong","Noto Serif SC","Source Han Serif SC","SimSun","宋体",serif;
+  /* type: Noto Serif SC 自托管子集，安卓微信也有宋体 */
+  --font-song: "DSH Serif","Songti SC","STSong","Noto Serif SC","Source Han Serif SC","SimSun","宋体",serif;
   --font-kai:  "Kaiti SC","STKaiti","KaiTi","楷体",var(--font-song);
   --font-num:  "Palatino Linotype","Book Antiqua",Palatino,"Times New Roman",var(--font-song);
 
@@ -321,12 +352,17 @@ h1{
   letter-spacing:-.03em;
   font-variant-numeric:tabular-nums lining-nums;
   font-feature-settings:"tnum" 1,"lnum" 1;
-  background:linear-gradient(168deg, var(--gold-hot) 0%, var(--gold-2) 44%, var(--gold) 100%);
+  /* 三段金都很深，最浅的也过 3:1，妈妈看得清 */
+  color:var(--gold-2);
+  background:linear-gradient(168deg, var(--gold-hot) 0%, var(--gold-2) 46%, var(--gold) 100%);
   -webkit-background-clip:text;
   background-clip:text;
-  color:transparent;
+  -webkit-text-fill-color:transparent;
   filter:drop-shadow(0 3px 10px var(--sh-num-a)) drop-shadow(0 1px 0 var(--sh-num-b));
   min-width:0;
+}
+@supports not ((-webkit-background-clip:text) or (background-clip:text)){
+  #days{ color:var(--gold); -webkit-text-fill-color:currentColor; }
 }
 
 #days-unit{
